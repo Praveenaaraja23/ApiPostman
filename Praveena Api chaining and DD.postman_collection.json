@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "3f1d3bc3-fa45-43af-b7e7-50bbe68cb377",
+		"name": "Praveena API Data Driven",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41598074"
+	},
+	"item": [
+		{
+			"name": "POSTRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"userAddress\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"addressId\": { \"type\": \"integer\" },\r",
+							"        \"plotNumber\": { \"type\": \"string\" },\r",
+							"        \"street\": { \"type\": [\"string\",\"null\"]},\r",
+							"        \"state\": { \"type\": \"string\" },\r",
+							"        \"country\": { \"type\": [\"string\",\"null\"]},\r",
+							"        \"zipCode\": { \"type\": \"integer\" }\r",
+							"      },\r",
+							"     \r",
+							"    },\r",
+							"    \"user_id\": { \"type\": \"integer\" },\r",
+							"    \"user_first_name\": { \"type\": \"string\" },\r",
+							"    \"user_last_name\": { \"type\": \"string\" },\r",
+							"    \"user_contact_number\": { \"type\": \"integer\" },\r",
+							"    \"user_email_id\": { \"type\": \"string\", \"format\": \"email\" },\r",
+							"    \"creation_time\": { \"type\": \"string\"},\r",
+							"    \"last_mod_time\": { \"type\": \"string\"}\r",
+							"  },\r",
+							"\r",
+							"\r",
+							"  \"required\": [\"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Validate schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"}); \r",
+							" \r",
+							"const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"   \r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.userId) {\r",
+							"pm.environment.set(\"userId\", jsonData.userId);\r",
+							"}\r",
+							"\r",
+							"pm.environment.get(\"Username\");\r",
+							"pm.environment.get(\"password\");\r",
+							"pm.environment.set(\"FirstName\", pm.iterationData.get(\"FirstName\"));\r",
+							"pm.environment.set(\"LastName\", pm.iterationData.get(\"LastName\"));\r",
+							"pm.environment.set(\"ContactNumber\", pm.iterationData.get(\"ContactNumber\"));\r",
+							"pm.environment.set(\"EmailId\", pm.iterationData.get(\"EmailId\"));\r",
+							"pm.environment.set(\"plotNumber\", pm.iterationData.get(\"plotNumber\"));\r",
+							"pm.environment.set(\"Street\", pm.iterationData.get(\"Street\"));\r",
+							"pm.environment.set(\"state\", pm.iterationData.get(\"state\"));\r",
+							"pm.environment.set(\"Country\", pm.iterationData.get(\"Country\"));\r",
+							"pm.environment.set(\"zipCode\", pm.iterationData.get(\"zipCode\"));\r",
+							"\r",
+							"pm.environment.set(\"Endpoint\", pm.iterationData.get(\"Endpoint\"));\r",
+							"pm.environment.set(\"Method\", pm.iterationData.get(\"Method\"));\r",
+							"pm.environment.set(\"Statuscode\", pm.iterationData.get(\"Statuscode\"));\r",
+							"pm.environment.set(\"StatusLine\", pm.iterationData.get(\"StatusLine\"));\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"user_first_name\":  \"{{FirstName}}\",\r\n \"user_last_name\":  \"{{LastName}}\" ,      \r\n  \"user_contact_number\": \"{{ContactNumber}}\",\r\n   \"user_email_id\": \"{{EmailId}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{plotNumber}}\",\r\n   \"Street\": \"{{Street}}\",\r\n   \"state\": \"{{state}}\",\r\n    \"Country\": \"{{Country}}\",\r\n   \"zipCode\": \"{{zipCode}}\"\r\n }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}{{Endpoint}}",
+					"host": [
+						"{{BaseUrl}}{{Endpoint}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"userAddress\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"addressId\": { \"type\": \"integer\" },\r",
+							"        \"plotNumber\": { \"type\": \"string\" },\r",
+							"        \"street\": { \"type\": [\"string\",\"null\"]},\r",
+							"        \"state\": { \"type\": \"string\" },\r",
+							"        \"country\": { \"type\": [\"string\",\"null\"]},\r",
+							"        \"zipCode\": { \"type\": \"integer\" }\r",
+							"      },\r",
+							"     \r",
+							"    },\r",
+							"    \"user_id\": { \"type\": \"integer\" },\r",
+							"    \"user_first_name\": { \"type\": \"string\" },\r",
+							"    \"user_last_name\": { \"type\": \"string\" },\r",
+							"    \"user_contact_number\": { \"type\": \"integer\" },\r",
+							"    \"user_email_id\": { \"type\": \"string\", \"format\": \"email\" },\r",
+							"    \"creation_time\": { \"type\": \"string\"},\r",
+							"    \"last_mod_time\": { \"type\": \"string\"}\r",
+							"  },\r",
+							"\r",
+							"\r",
+							"  \"required\": [\"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Validate schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"}); \r",
+							"\r",
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "userapi@2025",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Numpy@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"user_first_name\":\"{{FirstName}}\",\r\n\"user_last_name\":\"{{LastName}}\",\r\n\"user_contact_number\":\"{{ContactNumber}}\",\r\n\"user_email_id\":\"{{EmailId}}\",\r\n\r\n\"userAddress\":{\r\n\"plotNumber\":\"{{plotNumber}}\",\r\n\"street\":\"{{Street}}\",\r\n\"state\":\"{{state}}\",\r\n\"country\":\"{{Country}}\",\r\n\"zipCode\":\"{{zipCode}}\"\r\n}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/updateuser/{{userId}}",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"updateuser",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AllUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" \r",
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/users",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by UserID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" \r",
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/user/{{userId}}",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByFirstname",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/users/username/{{userFirstName}}",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"users",
+						"username",
+						"{{userFirstName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletebyUserId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							" \r",
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/deleteuser/{{userId}}",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"deleteuser",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleteuserbyfirstname",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							" const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(\"Content-Type header is present\" +contentType, () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify correct status code and status line\", function () {\r",
+							"    var expectedCode = parseInt(pm.environment.get(\"ExpectedStatusCode\"));\r",
+							"    var expectedStatus = pm.environment.get(\"ExpectedStatusLine\");\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(expectedCode);\r",
+							"    pm.expect(pm.response.status).to.eql(expectedStatus);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/deleteuser/username/{{userFirstName}}",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"deleteuser",
+						"username",
+						"{{userFirstName}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{Username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userID",
+			"value": "13987",
+			"type": "string"
+		},
+		{
+			"key": "userFirstName",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
